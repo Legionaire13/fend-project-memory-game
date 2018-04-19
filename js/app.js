@@ -1,6 +1,40 @@
+//array of classes to shuffle
+// const array = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bicycle', 'fa-diamond', 'fa-bomb', 'fa-leaf', 'fa-bomb', 'fa-bolt', 'fa-bicycle', 'fa-paper-plane-o', 'fa-cube'];
+
+// number of moves
+const moveCounter = 0; 
+
 /*
  * Create a list that holds all of your cards
  */
+const startingDeck = document.querySelector('.deck');
+
+//clear deck (убрать когда будет все готово в html)
+function clearDeck() {
+
+    while (startingDeck.firstChild) {
+      startingDeck.removeChild(startingDeck.firstChild);
+    }
+
+};
+
+//generate cards
+function generateCards() {
+    const fragment = document.createDocumentFragment();
+
+    while (fragment.childElementCount < 16) {
+        const newCard = document.createElement('li');
+        const newCardItem = document.createElement('i');
+
+        newCard.classList.add('card');
+        newCardItem.classList.add('fa');
+        
+        newCard.append(newCardItem);
+        fragment.appendChild(newCard);
+    }
+
+	return startingDeck.append(fragment);
+}
 
 
 /*
@@ -25,6 +59,23 @@ function shuffle(array) {
     return array;
 }
 
+// setting shuffled cards to the deck
+function setShuffledClasses() {
+    const elementCollection = startingDeck.getElementsByClassName('fa');
+    const array = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bicycle', 'fa-diamond', 'fa-bomb', 'fa-leaf', 'fa-bomb', 'fa-bolt', 'fa-bicycle', 'fa-paper-plane-o', 'fa-cube'];
+    
+    shuffle(array);
+    for (i = 0; i < startingDeck.childElementCount; i++) {
+        elementCollection[i].classList.add(array[i]);
+	}
+}
+
+// setting up for game sessian
+function readyToPlay() {
+	clearDeck();
+	generateCards();
+	setShuffledClasses();
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
