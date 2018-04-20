@@ -1,17 +1,18 @@
-let moveCounter = 0; 
+const moveCounter = 0; 
 const timerInitialValue = 0;
+const openCardsList = [];
 
 
 /*
- * Create a list that holds all of your cards
+ * (+) Create a list that holds all of your cards
  */
 const startingDeck = document.querySelector('.deck');
 
 /*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
+ * (+) Display the cards on the page
+ *   - (+) shuffle the list of cards using the provided "shuffle" method below
+ *   - (+) loop through each card and create its HTML
+ *   - (+) add each card's HTML to the page
  */
 
 // setting up for game sessian
@@ -26,6 +27,7 @@ function readyToPlay() {
 
     };
     clearDeck();
+    const openCardsList = []; //should be empty
 
     // Shuffle function from http://stackoverflow.com/a/2450976
     function shuffle(array) {
@@ -73,14 +75,14 @@ function readyToPlay() {
     }
     setShuffledClasses();
     // startingDeck.addEventListener('click', gameSessionStart);
-    startingDeck.addEventListener('click', checkCard);
+    startingDeck.addEventListener('click', matchCheck);
 }
 
 /*
  * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
+ *  - (+) display the card's symbol (put this functionality in another function that you call from this one)
+ *  - (+) add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
+ *  - (+) if the list already has another card, check to see if the two cards match
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
@@ -92,32 +94,42 @@ function readyToPlay() {
 // 
 // }
 
-
 //check if cards match
-function checkCard(event) {
-    let openCardsList = [];
+function matchCheck(event) {
+    const card = event.target;
 
     function openCard() {
-        if (event.target.nodeName === 'LI') {
-            return event.target.classList.add('open', 'show');
-        }
+        return card.classList.add('open', 'show');
+    }    
+    if (card.nodeName === 'LI') {
+        openCard();//visually opens cards
     }
-    openCard(); //visually opens cards
 
     function addCardToList() {
-        if (event.target.nodeName === 'LI' && openCardsList.length < 2) {
-            openCardsList.push(event.target.firstChild.classList[1]);
+        if (card.nodeName === 'LI' && openCardsList.length < 2) {          
+            return openCardsList.push(card);
         }
     }
-    addCardToList();
-    console.log(openCardsList);
-    
-    function secondCardCheck() {
-        if (openCardsList[0] === openCardsList[1]) {
-            console.log(openCardList[0], openCardsList[1]);
-        }
-    }
-    secondCardCheck();
+    addCardToList();//adds card to the array
 
-    console.log(openCardsList[0], openCardsList[1]);
+    function isMatched() {
+        if (card.nodeName === 'LI' && openCardsList.length === 2){
+            const a = openCardsList[0];
+            const b = openCardsList[1];
+
+            if (a.firstChild.classList[1] === b.firstChild.classList[1]) {
+                a.classList.add('match');//match visualization
+                b.classList.add('match');//match visualization
+            }
+            while(openCardsList.length) {
+                openCardsList.pop();//remove elements from "list"
+            }
+            setTimeout(function() {                    
+                a.classList.remove('open', 'show');
+                b.classList.remove('open', 'show');
+            }, 500);
+        }
+    }
+    isMatched();
+
 }
