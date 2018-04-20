@@ -7,6 +7,7 @@ const openCardsList = [];
  * (+) Create a list that holds all of your cards
  */
 const startingDeck = document.querySelector('.deck');
+startingDeck.addEventListener('click', readyToPlay);
 
 /*
  * (+) Display the cards on the page
@@ -17,6 +18,7 @@ const startingDeck = document.querySelector('.deck');
 
 // setting up for game sessian
 function readyToPlay() {
+    startingDeck.removeEventListener('click', readyToPlay);
 
     //clear deck (убрать когда будет все готово в html)
     function clearDeck() {
@@ -76,6 +78,7 @@ function readyToPlay() {
     setShuffledClasses();
     // startingDeck.addEventListener('click', gameSessionStart);
     startingDeck.addEventListener('click', matchCheck);
+
 }
 
 /*
@@ -90,9 +93,9 @@ function readyToPlay() {
  */
 
 //добавить сюда потом все
-// function gameSessionStart() {
-// 
-// }
+function gameSessionStart() {
+
+}
 
 //check if cards match
 function matchCheck(event) {
