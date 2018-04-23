@@ -28,9 +28,16 @@ restartButton.addEventListener('click', readyToPlay);
 
 // setting up for game sessian
 function readyToPlay() {
+    
+    //initial conditions of game
     startingDeck.removeEventListener('click', readyToPlay);
+    moveCounter = 0;
+    cardsPaired = 0;
+    setCounter();
+    setStarRating();
 
-    //clear deck (убрать когда будет все готово в html)
+
+    //clear deck
     function clearDeck() {
 
         while (startingDeck.firstChild) {
@@ -85,7 +92,7 @@ function readyToPlay() {
         }
     }
     setShuffledClasses();
-    // startingDeck.addEventListener('click', gameSessionStart);
+    
     startingDeck.addEventListener('click', matchCheck);
 }
 
@@ -124,6 +131,7 @@ function matchCheck(event) {
             const a = openCardsList[0];
             const b = openCardsList[1];
 
+            //if cards are not the same
             if (a != b) {
                 if (a.firstChild.classList[1] === b.firstChild.classList[1]) {
                     a.classList.add('match');//match visualization
@@ -143,11 +151,7 @@ function matchCheck(event) {
                 b.classList.remove('open', 'show');
             }, 400);
 
-            //counter
-            function setCounter() {
-                moveCounter++;
-                movesPlaceholder.textContent = moveCounter;
-            }
+            moveCounter++;
             setCounter();
             
             //check if player wins
@@ -162,23 +166,29 @@ function matchCheck(event) {
     
     isMatched();
 
-    //star rate
-    function setStarRating() {
-        let rate = '';
-        
-        if (moveCounter < 14) {
-            rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
-        } else if ((moveCounter >= 14) && (moveCounter < 20)) {
-            rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
-        } else {
-            rate = '<li><i class="fa fa-star"></i></li>';
-        }
-        
-        return starsPlaceholder.innerHTML = rate;
-    }
     setStarRating();
 }
 
 function congratulationsShown() {
     //console.log();
+}
+
+//counter
+function setCounter() {
+    movesPlaceholder.textContent = moveCounter;
+}
+
+//star rate
+function setStarRating() {
+    let rate = '';
+    
+    if (moveCounter < 14) {
+        rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
+    } else if ((moveCounter >= 14) && (moveCounter < 20)) {
+        rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
+    } else {
+        rate = '<li><i class="fa fa-star"></i></li>';
+    }
+    
+    return starsPlaceholder.innerHTML = rate;
 }
