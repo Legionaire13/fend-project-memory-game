@@ -1,7 +1,8 @@
 let moveCounter = 0;
 const movesPlaceholder = document.querySelector('.moves');
+const starsPlaceholder = document.querySelector('.stars');
 
-let cardPaired = 0;
+let cardsPaired = 0;
 const timerInitialValue = 0;
 const openCardsList = [];
 
@@ -82,7 +83,6 @@ function readyToPlay() {
     setShuffledClasses();
     // startingDeck.addEventListener('click', gameSessionStart);
     startingDeck.addEventListener('click', matchCheck);
-
 }
 
 /*
@@ -122,62 +122,59 @@ function matchCheck(event) {
             if (a.firstChild.classList[1] === b.firstChild.classList[1]) {
                 a.classList.add('match');//match visualization
                 b.classList.add('match');//match visualization
-                cardPaired++;
+                cardsPaired++;
             }
 
+            //remove elements from "list"
             while(openCardsList.length) {
-                openCardsList.pop();//remove elements from "list"
+                openCardsList.pop();
             }
             
+            //hiding pair of cards
             setTimeout(function() {                    
                 a.classList.remove('open', 'show');
                 b.classList.remove('open', 'show');
             }, 400);
 
+            //counter
             function setCounter() {
                 moveCounter++;
                 movesPlaceholder.textContent = moveCounter;
             }
             setCounter();
             
-            //console.log(moveCounter);
+            //check if player wins
+            function checkWinCondition() {
+                if (cardsPaired === 8) {
+                    console.log('win condition triggered');
+                }
+            }
+            checkWinCondition();
         }
     }
     
     isMatched();
 
+    //star rate
     function setStarRating() {
-        let starsContainer = document.querySelector('.stars');
-        let expr = 0;
-        switch (expr) {
-            case moveCounter > 20: 
-            1;
-              break;
-            case moveCounter > 14: 
-            2;
-              break;
-            default: 
-            3;
+        let expr = '';
+        
+        if (moveCounter < 14) {
+            expr = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
+            // console.log('1');
+        } else if ((moveCounter >= 14) && (moveCounter < 20)) {
+            expr = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
+            // console.log('2');
+        } else {
+            expr = '<li><i class="fa fa-star"></i></li>';
+            // console.log('3');
         }
-        console.log(expr);
-
-        //переделать
-
-        // const fragment = document.createDocumentFragment();
-        // while (fragment.childElementCount < expr) {
-        //     const newStar = document.createElement('li');
-        //     const newStarItem = document.createElement('i');
-            
-        //     newStarItem.classList.add('fa fa-star');
-        //     newStar.append(newStarItem);
-        //     fragment.appendChild(newCard);
-        // }
-        // return starsContainer.append(fragment);
+        
+        return starsPlaceholder.innerHTML = expr;
     }
     setStarRating();
+}
 
-    function congratulationsShown() {
-        //console.log();
-    }
-
+function congratulationsShown() {
+    //console.log();
 }
