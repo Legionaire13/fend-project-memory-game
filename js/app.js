@@ -11,9 +11,13 @@ const openCardsList = [];
  * (+) Create a list that holds all of your cards
  */
 const startingDeck = document.querySelector('.deck');
+const restartButton = document.querySelector('.restart');
 
-//stargame event listener
+//star game event listener
 startingDeck.addEventListener('click', readyToPlay);
+
+//restart game event listener
+restartButton.addEventListener('click', readyToPlay);
 
 /*
  * (+) Display the cards on the page
@@ -102,27 +106,30 @@ function matchCheck(event) {
 
     function openCard() {
         return card.classList.add('open', 'show');
-    }    
-    if (card.nodeName === 'LI') {
+    }
+    if (card.nodeName === 'LI' && card.classList[1] !== 'open') {
         openCard();//visually opens cards
-    }
 
-    function addCardToList() {
-        if (card.nodeName === 'LI' && openCardsList.length < 2) {          
-            return openCardsList.push(card);
+        //adds card to the array if correct card opened
+        function addCardToList() {
+            if (card.nodeName === 'LI' && openCardsList.length < 2) {          
+                return openCardsList.push(card);
+            }
         }
+        addCardToList();
     }
-    addCardToList();//adds card to the array
 
     function isMatched() {
         if (card.nodeName === 'LI' && openCardsList.length === 2){
             const a = openCardsList[0];
             const b = openCardsList[1];
 
-            if (a.firstChild.classList[1] === b.firstChild.classList[1]) {
-                a.classList.add('match');//match visualization
-                b.classList.add('match');//match visualization
-                cardsPaired++;
+            if (a != b) {
+                if (a.firstChild.classList[1] === b.firstChild.classList[1]) {
+                    a.classList.add('match');//match visualization
+                    b.classList.add('match');//match visualization
+                    cardsPaired++;
+                }
             }
 
             //remove elements from "list"
@@ -144,7 +151,7 @@ function matchCheck(event) {
             setCounter();
             
             //check if player wins
-            function checkWinCondition() {
+            function checkWinCondition() {                
                 if (cardsPaired === 8) {
                     console.log('win condition triggered');
                 }
@@ -157,20 +164,17 @@ function matchCheck(event) {
 
     //star rate
     function setStarRating() {
-        let expr = '';
+        let rate = '';
         
         if (moveCounter < 14) {
-            expr = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
-            // console.log('1');
+            rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
         } else if ((moveCounter >= 14) && (moveCounter < 20)) {
-            expr = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
-            // console.log('2');
+            rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
         } else {
-            expr = '<li><i class="fa fa-star"></i></li>';
-            // console.log('3');
+            rate = '<li><i class="fa fa-star"></i></li>';
         }
         
-        return starsPlaceholder.innerHTML = expr;
+        return starsPlaceholder.innerHTML = rate;
     }
     setStarRating();
 }
