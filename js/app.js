@@ -1,17 +1,16 @@
 let moveCounter = 0;
+let cardsPaired = 0;
+const openCardsList = [];
 const movesPlaceholder = document.querySelector('.moves');
 const starsPlaceholder = document.querySelector('.stars');
-
-let cardsPaired = 0;
-const timerInitialValue = 0;
-const openCardsList = [];
+const timerPlaceholder = document.querySelector('.timer');
+const restartButton = document.querySelector('.restart');
 
 
 /*
  * (+) Create a list that holds all of your cards
  */
 const startingDeck = document.querySelector('.deck');
-const restartButton = document.querySelector('.restart');
 
 //star game event listener
 startingDeck.addEventListener('click', readyToPlay);
@@ -183,12 +182,41 @@ function setStarRating() {
     let rate = '';
     
     if (moveCounter < 14) {
-        rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
+        rate = `
+        <li><i class="fa fa-star"></i></li>
+        <li><i class="fa fa-star"></i></li>
+        <li><i class="fa fa-star"></i></li>`;
     } else if ((moveCounter >= 14) && (moveCounter < 20)) {
-        rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
+        rate = `
+        <li><i class="fa fa-star"></i></li>
+        <li><i class="fa fa-star"></i></li>`;
     } else {
-        rate = '<li><i class="fa fa-star"></i></li>';
+        rate = `
+        <li><i class="fa fa-star"></i></li>`;
     }
     
     return starsPlaceholder.innerHTML = rate;
+}
+
+let gameTimer;
+//game timer countdown
+function gameTimerStart() {
+    let min = 0, sec = 1;
+
+    gameTimer = setInterval(function() {
+        
+        (sec < 10) ? timerPlaceholder.innerHTML = `${min}:0${sec}` : timerPlaceholder.innerHTML = `${min}:${sec}`;
+
+        if (sec == 59) {
+            min++;
+            sec = 0;
+        } else {
+            sec++;
+        }
+    }, 1000);
+}
+      
+//stop timer countdown
+function gameTimerStop(gameTimer) {
+    clearInterval(gameTimer);
 }
