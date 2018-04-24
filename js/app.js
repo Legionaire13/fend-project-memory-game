@@ -1,5 +1,5 @@
-let moveCounter = 0;
-let cardsPaired = 0;
+let moveCounter = 0, cardsPaired = 0;
+let gameTimer;
 const openCardsList = [];
 const movesPlaceholder = document.querySelector('.moves');
 const starsPlaceholder = document.querySelector('.stars');
@@ -25,15 +25,40 @@ restartButton.addEventListener('click', readyToPlay);
  *   - (+) add each card's HTML to the page
  */
 
+//game timer countdown
+function gameTimerStart() {
+    let min = 0, sec = 1;
+
+    gameTimer = setInterval(function() {
+        
+        (sec < 10) ? timerPlaceholder.innerHTML = `${min}:0${sec}` : timerPlaceholder.innerHTML = `${min}:${sec}`;
+
+        if (sec == 59) {
+            min++;
+            sec = 0;
+        } else {
+            sec++;
+        }
+    }, 1000);
+}
+      
+//stop timer countdown
+function gameTimerStop(gameTimer) {
+    clearInterval(gameTimer);
+}
+
 // setting up for game sessian
 function readyToPlay() {
     
     //initial conditions of game
     startingDeck.removeEventListener('click', readyToPlay);
+    startingDeck.addEventListener('click', gameTimerStart);
     moveCounter = 0;
     cardsPaired = 0;
     setCounter();
     setStarRating();
+    gameTimerStop(gameTimer); //to trigger when reset
+    timerPlaceholder.innerHTML = "0:00";
 
 
     //clear deck
@@ -109,6 +134,9 @@ function readyToPlay() {
 //check if cards match
 function matchCheck(event) {
     const card = event.target;
+    
+    //timer starts and listener removed on first click
+    startingDeck.removeEventListener('click', gameTimerStart);
 
     function openCard() {
         return card.classList.add('open', 'show');
@@ -157,7 +185,10 @@ function matchCheck(event) {
             function checkWinCondition() {                
                 if (cardsPaired === 8) {
                     console.log('win condition triggered');
+                    gameTimerStop(gameTimer);
                 }
+
+                //win report
             }
             checkWinCondition();
         }
@@ -196,27 +227,4 @@ function setStarRating() {
     }
     
     return starsPlaceholder.innerHTML = rate;
-}
-
-let gameTimer;
-//game timer countdown
-function gameTimerStart() {
-    let min = 0, sec = 1;
-
-    gameTimer = setInterval(function() {
-        
-        (sec < 10) ? timerPlaceholder.innerHTML = `${min}:0${sec}` : timerPlaceholder.innerHTML = `${min}:${sec}`;
-
-        if (sec == 59) {
-            min++;
-            sec = 0;
-        } else {
-            sec++;
-        }
-    }, 1000);
-}
-      
-//stop timer countdown
-function gameTimerStop(gameTimer) {
-    clearInterval(gameTimer);
 }
