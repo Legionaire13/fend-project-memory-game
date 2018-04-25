@@ -1,10 +1,13 @@
 let moveCounter = 0, cardsPaired = 0;
 let gameTimer;
+let tryNumber = 0;
 const openCardsList = [];
 const movesPlaceholder = document.querySelector('.moves');
 const starsPlaceholder = document.querySelector('.stars');
 const timerPlaceholder = document.querySelector('.timer');
+const endgameScorePanel = document.querySelector('.endgame__score-panel');
 const restartButton = document.querySelector('.restart');
+const modalWindow = document.querySelector('.endgame__blackbox');
 
 
 /*
@@ -25,7 +28,7 @@ restartButton.addEventListener('click', readyToPlay);
  *   - (+) add each card's HTML to the page
  */
 
-//game timer countdown
+//starts game timer countdown
 function gameTimerStart() {
     let min = 0, sec = 1;
 
@@ -50,15 +53,19 @@ function gameTimerStop(gameTimer) {
 // setting up for game sessian
 function readyToPlay() {
     
-    //initial conditions of game
+    //game initial condition
+    gameTimerStop(gameTimer); //to trigger when reset
+
+    timerPlaceholder.innerHTML = "0:00"; //(ИСПРАВИТЬ) ПОСЛЕ СБРОСА ТАЙМЕР СТОИТ В НАЧАЛЕ НОВОЙ ИГРЫ
+
     startingDeck.removeEventListener('click', readyToPlay);
     startingDeck.addEventListener('click', gameTimerStart);
+    modalWindow.classList.remove('display_modal');
     moveCounter = 0;
     cardsPaired = 0;
+    const openCardsList = [];
     setCounter();
     setStarRating();
-    gameTimerStop(gameTimer); //to trigger when reset
-    timerPlaceholder.innerHTML = "0:00";
 
 
     //clear deck
@@ -176,7 +183,7 @@ function matchCheck(event) {
             setTimeout(function() {                    
                 a.classList.remove('open', 'show');
                 b.classList.remove('open', 'show');
-            }, 400);
+            }, 500);
 
             moveCounter++;
             setCounter();
@@ -186,9 +193,10 @@ function matchCheck(event) {
                 if (cardsPaired === 8) {
                     console.log('win condition triggered');
                     gameTimerStop(gameTimer);
-                }
 
-                //win report
+                    //win report
+                    showModal();
+                }
             }
             checkWinCondition();
         }
@@ -199,9 +207,7 @@ function matchCheck(event) {
     setStarRating();
 }
 
-function congratulationsShown() {
-    //console.log();
-}
+
 
 //counter
 function setCounter() {
@@ -225,6 +231,42 @@ function setStarRating() {
         rate = `
         <li><i class="fa fa-star"></i></li>`;
     }
-    
     return starsPlaceholder.innerHTML = rate;
+}
+
+function showModal() {
+    const fragment = document.createDocumentFragment();
+    // const endgameRestartButton = document.querySelector('.endgame__blackbox');
+    const tryNumber = 1; //количество детей, добавить массив в который дети будут пушиться
+
+    modalWindow.classList.add('display_modal');
+
+    const newTry = document.createElement('div');
+    newTry.classList.add('endgame__try');
+
+    const newTryNumber = document.createElement('span');
+    newTryNumber.classList.add('endgame__number');
+    newTryNumber.innerHTML = `#${tryNumber}`;
+    newTry.append(newTryNumber);
+
+    const newTryRate = document.createElement('ul');
+    newTryRate.classList.add('endgame__stars');
+    newTryRate.append(starsPlaceholder.firstElementChild);
+    newTry.append(newTryRate);
+
+    const newTryMoves = document.createElement('span');
+    newTryMoves.classList.add('endgame__moves');
+    newTryMoves.innerHTML = moveCounter + " Moves";
+    newTry.append(newTryMoves);
+
+    const newTryTimer = document.createElement('span');
+    newTryTimer.classList.add('endgame__timer');
+    newTryTimer.innerHTML = timerPlaceholder.innerHTML;
+    newTry.append(newTryTimer);
+
+    fragment.append(newTry);
+
+    modalWindow.addEventListener('click', readyToPlay);
+
+    return endgameScorePanel.append(fragment);
 }
