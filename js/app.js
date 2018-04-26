@@ -1,6 +1,4 @@
-let moveCounter = 0, cardsPaired = 0;
-let gameTimer;
-let numberOfTries = [];
+let moveCounter = 0, cardsPaired = 0, gameTimer, numberOfTries = [];
 const openCardsList = [];
 const movesPlaceholder = document.querySelector('.moves');
 const starsPlaceholder = document.querySelector('.stars');
@@ -9,6 +7,7 @@ const endgameScorePanel = document.querySelector('.endgame__score-panel');
 const restartButton = document.querySelector('.restart');
 const modalWindow = document.querySelector('.endgame__blackbox');
 const startingDeck = document.querySelector('.deck');
+const blured = document.querySelector('.container');
 
 //star game event listener
 startingDeck.addEventListener('click', readyToPlay);
@@ -43,18 +42,18 @@ function readyToPlay() {
     
     //game initial condition
     gameTimerStop(gameTimer); //to trigger when reset
+    startingDeck.removeEventListener('click', readyToPlay);
 
     timerPlaceholder.innerHTML = "0:00"; //(ИСПРАВИТЬ) ПОСЛЕ СБРОСА ТАЙМЕР СТОИТ В НАЧАЛЕ НОВОЙ ИГРЫ
-
-    startingDeck.removeEventListener('click', readyToPlay);
     startingDeck.addEventListener('click', gameTimerStart);
+
     modalWindow.classList.remove('display_modal');
+    blured.classList.remove('blured');
     moveCounter = 0;
     cardsPaired = 0;
     const openCardsList = [];
     setCounter();
     setStarRating();
-
 
     //clear deck
     function clearDeck() {
@@ -186,7 +185,7 @@ function matchCheck(event) {
 
 
 
-//counter
+//counter of moves
 function setCounter() {
     movesPlaceholder.textContent = moveCounter;
 }
@@ -205,11 +204,13 @@ function setStarRating() {
     return starsPlaceholder.innerHTML = rate;
 }
 
-const tryResults = {};
+//creation of modal widow
 function showModal() {
+    const tryResults = {};
     const fragment = document.createDocumentFragment();
 
     modalWindow.classList.add('display_modal');
+    blured.classList.add('blured');
 
     numberOfTries.push(tryResults);
     tryResults.number = numberOfTries.length;
@@ -220,7 +221,7 @@ function showModal() {
     const newTry = document.createElement('div');
     newTry.classList.add('endgame__try');
 
-    //number of try
+    //number of tries
     const newTryNumber = document.createElement('span');
     newTryNumber.classList.add('endgame__number');
     newTryNumber.innerHTML = `#${tryResults.number}`;
