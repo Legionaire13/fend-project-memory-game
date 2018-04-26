@@ -185,6 +185,10 @@ h1 {
     list-style-type: none;
 }
 
+.endgame__stars li {
+    float: left;
+}
+
 .endgame__moves {
     margin-right: 5px;
 }

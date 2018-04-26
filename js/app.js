@@ -1,6 +1,6 @@
 let moveCounter = 0, cardsPaired = 0;
 let gameTimer;
-let tryNumber = 0;
+let numberOfTries = [];
 const openCardsList = [];
 const movesPlaceholder = document.querySelector('.moves');
 const starsPlaceholder = document.querySelector('.stars');
@@ -8,11 +8,6 @@ const timerPlaceholder = document.querySelector('.timer');
 const endgameScorePanel = document.querySelector('.endgame__score-panel');
 const restartButton = document.querySelector('.restart');
 const modalWindow = document.querySelector('.endgame__blackbox');
-
-
-/*
- * (+) Create a list that holds all of your cards
- */
 const startingDeck = document.querySelector('.deck');
 
 //star game event listener
@@ -21,12 +16,6 @@ startingDeck.addEventListener('click', readyToPlay);
 //restart game event listener
 restartButton.addEventListener('click', readyToPlay);
 
-/*
- * (+) Display the cards on the page
- *   - (+) shuffle the list of cards using the provided "shuffle" method below
- *   - (+) loop through each card and create its HTML
- *   - (+) add each card's HTML to the page
- */
 
 //starts game timer countdown
 function gameTimerStart() {
@@ -35,7 +24,6 @@ function gameTimerStart() {
     gameTimer = setInterval(function() {
         
         (sec < 10) ? timerPlaceholder.innerHTML = `${min}:0${sec}` : timerPlaceholder.innerHTML = `${min}:${sec}`;
-
         if (sec == 59) {
             min++;
             sec = 0;
@@ -127,17 +115,6 @@ function readyToPlay() {
     startingDeck.addEventListener('click', matchCheck);
 }
 
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - (+) display the card's symbol (put this functionality in another function that you call from this one)
- *  - (+) add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - (+) if the list already has another card, check to see if the two cards match
- *    + (+) if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + (+) if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + (+) increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
-
 //check if cards match
 function matchCheck(event) {
     const card = event.target;
@@ -216,57 +193,60 @@ function setCounter() {
 
 //star rate
 function setStarRating() {
-    let rate = '';
+    let rate;
     
     if (moveCounter < 14) {
-        rate = `
-        <li><i class="fa fa-star"></i></li>
-        <li><i class="fa fa-star"></i></li>
-        <li><i class="fa fa-star"></i></li>`;
+        rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
     } else if ((moveCounter >= 14) && (moveCounter < 20)) {
-        rate = `
-        <li><i class="fa fa-star"></i></li>
-        <li><i class="fa fa-star"></i></li>`;
+        rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
     } else {
-        rate = `
-        <li><i class="fa fa-star"></i></li>`;
+        rate = '<li><i class="fa fa-star"></i></li>';        
     }
     return starsPlaceholder.innerHTML = rate;
 }
 
+const tryResults = {};
 function showModal() {
     const fragment = document.createDocumentFragment();
-    // const endgameRestartButton = document.querySelector('.endgame__blackbox');
-    const tryNumber = 1; //количество детей, добавить массив в который дети будут пушиться
 
     modalWindow.classList.add('display_modal');
+
+    numberOfTries.push(tryResults);
+    tryResults.number = numberOfTries.length;
+    tryResults.rate = starsPlaceholder.innerHTML;
+    tryResults.moves =  moveCounter;
+    tryResults.time = timerPlaceholder.innerHTML;
 
     const newTry = document.createElement('div');
     newTry.classList.add('endgame__try');
 
+    //number of try
     const newTryNumber = document.createElement('span');
     newTryNumber.classList.add('endgame__number');
-    newTryNumber.innerHTML = `#${tryNumber}`;
+    newTryNumber.innerHTML = `#${tryResults.number}`;
     newTry.append(newTryNumber);
 
+    //stars
     const newTryRate = document.createElement('ul');
     newTryRate.classList.add('endgame__stars');
-    newTryRate.append(starsPlaceholder.firstElementChild);
+    newTryRate.innerHTML = tryResults.rate;
     newTry.append(newTryRate);
 
+    //number of moves
     const newTryMoves = document.createElement('span');
     newTryMoves.classList.add('endgame__moves');
-    newTryMoves.innerHTML = moveCounter + " Moves";
+    newTryMoves.innerHTML = tryResults.moves + " Moves";
     newTry.append(newTryMoves);
 
+    //time results
     const newTryTimer = document.createElement('span');
     newTryTimer.classList.add('endgame__timer');
-    newTryTimer.innerHTML = timerPlaceholder.innerHTML;
+    newTryTimer.innerHTML = tryResults.time;
     newTry.append(newTryTimer);
 
     fragment.append(newTry);
 
     modalWindow.addEventListener('click', readyToPlay);
-
+    
     return endgameScorePanel.append(fragment);
 }
