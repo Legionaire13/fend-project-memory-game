@@ -1,4 +1,5 @@
 # Memory Game Project
+This game is training project allowing to train your memory skills (while coding and testing this app too).
 
 ## Table of Contents
 
@@ -6,15 +7,18 @@
 * [Contributing](#contributing)
 
 ## Instructions
+1. To start this game you can follow the link below:
+https://legionaire13.github.io/fend-project-memory-game/
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+2. How to play the game
+Once the game is started the player is supposed to find all the matching pairs of cards at the deck by checking them with simple mouse click :)
+Once all pairs are found the player wins.
 
-To get started, open `js/app.js` and start building out the app's functionality
-
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+3. Required dependencies
+To play the game you should have device of any screen size with a modern browser installed!
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+Contributing to this project is not needed. But if you find yourself willing to play with code, you're free to do it.
 
 For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
