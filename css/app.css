@@ -194,12 +194,6 @@ h1, h2 {
     cursor: pointer;
 }
 
-.start-message {
-    text-align: center;
-    flex-grow: 1;
-    cursor: pointer;
-}
-
 .blured {
     transition: filter 0.5s;
     -webkit-filter: blur(5px);
