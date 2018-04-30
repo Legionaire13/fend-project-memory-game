@@ -1,17 +1,17 @@
 let moveCounter = 0, cardsPaired = 0, gameTimer, numberOfTries = [], openCardsList = [];
-const movesPlaceholder = document.querySelector('.moves');
-const starsPlaceholder = document.querySelector('.stars');
-const timerPlaceholder = document.querySelector('.timer');
-const endgameScorePanel = document.querySelector('.endgame__score-panel');
-const restartButton = document.querySelector('.restart');
-const modalWindow = document.querySelector('.endgame__blackbox');
-const startingDeck = document.querySelector('.deck');
-const blured = document.querySelector('.container');
+const movesPlaceholder = document.querySelector(".moves");
+const starsPlaceholder = document.querySelector(".stars");
+const timerPlaceholder = document.querySelector(".timer");
+const endgameScorePanel = document.querySelector(".endgame__score-panel");
+const restartButton = document.querySelector(".restart");
+const modalWindow = document.querySelector(".endgame__blackbox");
+const startingDeck = document.querySelector(".deck");
+const blured = document.querySelector(".container");
 
 readyToPlay();
 
 // restart game event listener
-restartButton.addEventListener('click', readyToPlay);
+restartButton.addEventListener("click", readyToPlay);
 
 
 // starts game timer countdown
@@ -41,12 +41,12 @@ function readyToPlay() {
     
     // game initial condition
     gameTimerStop(); // to trigger when reset
-    startingDeck.removeEventListener('click', readyToPlay);
+    startingDeck.removeEventListener("click", readyToPlay);
 
     timerPlaceholder.innerHTML = "0:00"; // (ИСПРАВИТЬ) ПОСЛЕ СБРОСА ТАЙМЕР СТОИТ В НАЧАЛЕ НОВОЙ ИГРЫ
 
-    modalWindow.classList.remove('display_modal');
-    blured.classList.remove('blured');
+    modalWindow.classList.remove("display_modal");
+    blured.classList.remove("blured");
 
     //some values are set to default
     moveCounter = 0;
@@ -55,7 +55,7 @@ function readyToPlay() {
     
     setCounter();
     setStarRating();
-    startingDeck.addEventListener('click', gameTimerStart);
+    startingDeck.addEventListener("click", gameTimerStart);
 
     // lear deck
     function clearDeck() {
@@ -87,11 +87,11 @@ function readyToPlay() {
         const fragment = document.createDocumentFragment();
 
         while (fragment.childElementCount < 16) {
-            const newCard = document.createElement('li');
-            const newCardItem = document.createElement('i');
+            const newCard = document.createElement("li");
+            const newCardItem = document.createElement("i");
 
-            newCard.classList.add('card');
-            newCardItem.classList.add('fa');
+            newCard.classList.add("card");
+            newCardItem.classList.add("fa");
             
             newCard.append(newCardItem);
             fragment.appendChild(newCard);
@@ -103,8 +103,8 @@ function readyToPlay() {
     
     // setting shuffled cards to the deck
     function setShuffledClasses() {
-        const elementCollection = startingDeck.getElementsByClassName('fa');
-        const array = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bicycle', 'fa-diamond', 'fa-bomb', 'fa-leaf', 'fa-bomb', 'fa-bolt', 'fa-bicycle', 'fa-paper-plane-o', 'fa-cube'];
+        const elementCollection = startingDeck.getElementsByClassName("fa");
+        const array = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bicycle", "fa-diamond", "fa-bomb", "fa-leaf", "fa-bomb", "fa-bolt", "fa-bicycle", "fa-paper-plane-o", "fa-cube"];
         
         shuffle(array);
         for (let i = 0; i < startingDeck.childElementCount; i++) {
@@ -113,7 +113,7 @@ function readyToPlay() {
     }
     setShuffledClasses();
     
-    startingDeck.addEventListener('click', matchCheck);
+    startingDeck.addEventListener("click", matchCheck);
 }
 
 // check if cards match
@@ -121,17 +121,17 @@ function matchCheck(event) {
     const card = event.target;
     
     //timer starts and listener removed on first click
-    startingDeck.removeEventListener('click', gameTimerStart);
+    startingDeck.removeEventListener("click", gameTimerStart);
 
     function openCard() {
-        return card.classList.add('open', 'show');
+        return card.classList.add("open", "show");
     }
-    if (card.nodeName === 'LI' && card.classList[1] !== 'open') {
+    if (card.nodeName === "LI" && card.classList[1] !== "open") {
         openCard();//visually opens cards
 
         // adds card to the array if correct card opened
         function addCardToList() {
-            if (card.nodeName === 'LI' && openCardsList.length < 2) {          
+            if (card.nodeName === "LI" && openCardsList.length < 2) {          
                 return openCardsList.push(card);
             }
         }
@@ -139,15 +139,15 @@ function matchCheck(event) {
     }
 
     function isMatched() {
-        if (card.nodeName === 'LI' && openCardsList.length === 2){
+        if (card.nodeName === "LI" && openCardsList.length === 2){
             const a = openCardsList[0];
             const b = openCardsList[1];
 
             // if cards are not the same
             if (a != b) {
                 if (a.firstChild.classList[1] === b.firstChild.classList[1]) {
-                    a.classList.add('match');//match visualization
-                    b.classList.add('match');//match visualization
+                    a.classList.add("match");//match visualization
+                    b.classList.add("match");//match visualization
                     cardsPaired++;
                 }
             }
@@ -159,8 +159,8 @@ function matchCheck(event) {
             
             // hiding pair of cards
             setTimeout(function() {                    
-                a.classList.remove('open', 'show');
-                b.classList.remove('open', 'show');
+                a.classList.remove("open", "show");
+                b.classList.remove("open", "show");
             }, 500);
 
             moveCounter++;
@@ -169,7 +169,7 @@ function matchCheck(event) {
             // check if player wins
             function checkWinCondition() {                
                 if (cardsPaired === 8) {
-                    console.log('win condition triggered');
+                    console.log("win condition triggered");
                     gameTimerStop(gameTimer);
 
                     //win report
@@ -197,11 +197,11 @@ function setStarRating() {
     let rate;
     
     if (moveCounter < 14) {
-        rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
+        rate = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`;
     } else if ((moveCounter >= 14) && (moveCounter < 20)) {
-        rate = '<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>';
+        rate = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`;
     } else {
-        rate = '<li><i class="fa fa-star"></i></li>';        
+        rate = `<li><i class="fa fa-star"></i></li>`;
     }
     return starsPlaceholder.innerHTML = rate;
 }
@@ -211,8 +211,8 @@ function showModal() {
     const tryResults = {};
     const fragment = document.createDocumentFragment();
 
-    modalWindow.classList.add('display_modal');
-    blured.classList.add('blured');
+    modalWindow.classList.add("display_modal");
+    blured.classList.add("blured");
 
     numberOfTries.push(tryResults);
     tryResults.number = numberOfTries.length;
@@ -220,36 +220,36 @@ function showModal() {
     tryResults.moves =  moveCounter;
     tryResults.time = timerPlaceholder.innerHTML;
 
-    const newTry = document.createElement('div');
-    newTry.classList.add('endgame__try');
+    const newTry = document.createElement("div");
+    newTry.classList.add("endgame__try");
 
     // number of tries
-    const newTryNumber = document.createElement('span');
-    newTryNumber.classList.add('endgame__number');
+    const newTryNumber = document.createElement("span");
+    newTryNumber.classList.add("endgame__number");
     newTryNumber.innerHTML = `#${tryResults.number}`;
     newTry.append(newTryNumber);
 
     // stars
-    const newTryRate = document.createElement('ul');
-    newTryRate.classList.add('endgame__stars');
+    const newTryRate = document.createElement("ul");
+    newTryRate.classList.add("endgame__stars");
     newTryRate.innerHTML = tryResults.rate;
     newTry.append(newTryRate);
 
     // number of moves
-    const newTryMoves = document.createElement('span');
-    newTryMoves.classList.add('endgame__moves');
+    const newTryMoves = document.createElement("span");
+    newTryMoves.classList.add("endgame__moves");
     newTryMoves.innerHTML = tryResults.moves + " Moves";
     newTry.append(newTryMoves);
 
     // time results
-    const newTryTimer = document.createElement('span');
-    newTryTimer.classList.add('endgame__timer');
+    const newTryTimer = document.createElement("span");
+    newTryTimer.classList.add("endgame__timer");
     newTryTimer.innerHTML = tryResults.time;
     newTry.append(newTryTimer);
 
     fragment.append(newTry);
 
-    modalWindow.addEventListener('click', readyToPlay);
+    modalWindow.addEventListener("click", readyToPlay);
     
     return endgameScorePanel.append(fragment);
 }
