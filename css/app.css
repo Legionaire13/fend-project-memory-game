@@ -22,13 +22,14 @@ body {
 }
 
 .container {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
-h1 {
+h1, h2 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
 }
@@ -180,6 +181,7 @@ h1 {
 
 .endgame__stars li {
     float: left;
+    display: inline-block;
 }
 
 .endgame__moves {
@@ -195,7 +197,14 @@ h1 {
     cursor: pointer;
 }
 
+.start-message {
+    text-align: center;
+    flex-grow: 1;
+    cursor: pointer;
+}
+
 .blured {
+    transition: filter 0.5s;
     -webkit-filter: blur(5px);
      -moz-filter: blur(5px);
        -o-filter: blur(5px);

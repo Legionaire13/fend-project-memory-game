@@ -9,18 +9,18 @@ const modalWindow = document.querySelector('.endgame__blackbox');
 const startingDeck = document.querySelector('.deck');
 const blured = document.querySelector('.container');
 
-//star game event listener
+// star game event listener
 startingDeck.addEventListener('click', readyToPlay);
 
-//restart game event listener
+// restart game event listener
 restartButton.addEventListener('click', readyToPlay);
 
 
-//starts game timer countdown
+// starts game timer countdown
 function gameTimerStart() {
     let min = 0, sec = 1;
 
-    gameTimer = setInterval(function() {
+    return gameTimer = setInterval(function() {
         
         (sec < 10) ? timerPlaceholder.innerHTML = `${min}:0${sec}` : timerPlaceholder.innerHTML = `${min}:${sec}`;
         if (sec == 59) {
@@ -30,22 +30,22 @@ function gameTimerStart() {
             sec++;
         }
     }, 1000);
+
 }
       
-//stop timer countdown
-function gameTimerStop(gameTimer) {
-    clearInterval(gameTimer);
+// stop timer countdown
+function gameTimerStop() {
+    return clearInterval(gameTimer);
 }
 
 // setting up for game sessian
 function readyToPlay() {
     
-    //game initial condition
-    gameTimerStop(gameTimer); //to trigger when reset
+    // game initial condition
+    gameTimerStop(); // to trigger when reset
     startingDeck.removeEventListener('click', readyToPlay);
 
-    timerPlaceholder.innerHTML = "0:00"; //(ИСПРАВИТЬ) ПОСЛЕ СБРОСА ТАЙМЕР СТОИТ В НАЧАЛЕ НОВОЙ ИГРЫ
-    startingDeck.addEventListener('click', gameTimerStart);
+    timerPlaceholder.innerHTML = "0:00"; // (ИСПРАВИТЬ) ПОСЛЕ СБРОСА ТАЙМЕР СТОИТ В НАЧАЛЕ НОВОЙ ИГРЫ
 
     modalWindow.classList.remove('display_modal');
     blured.classList.remove('blured');
@@ -54,8 +54,9 @@ function readyToPlay() {
     const openCardsList = [];
     setCounter();
     setStarRating();
+    startingDeck.addEventListener('click', gameTimerStart);
 
-    //clear deck
+    // lear deck
     function clearDeck() {
 
         while (startingDeck.firstChild) {
@@ -80,7 +81,7 @@ function readyToPlay() {
         return array;
     }
 
-    //generate cards
+    // generate cards
     function generateCards() {
         const fragment = document.createDocumentFragment();
 
@@ -114,7 +115,7 @@ function readyToPlay() {
     startingDeck.addEventListener('click', matchCheck);
 }
 
-//check if cards match
+// check if cards match
 function matchCheck(event) {
     const card = event.target;
     
@@ -127,7 +128,7 @@ function matchCheck(event) {
     if (card.nodeName === 'LI' && card.classList[1] !== 'open') {
         openCard();//visually opens cards
 
-        //adds card to the array if correct card opened
+        // adds card to the array if correct card opened
         function addCardToList() {
             if (card.nodeName === 'LI' && openCardsList.length < 2) {          
                 return openCardsList.push(card);
@@ -141,7 +142,7 @@ function matchCheck(event) {
             const a = openCardsList[0];
             const b = openCardsList[1];
 
-            //if cards are not the same
+            // if cards are not the same
             if (a != b) {
                 if (a.firstChild.classList[1] === b.firstChild.classList[1]) {
                     a.classList.add('match');//match visualization
@@ -150,12 +151,12 @@ function matchCheck(event) {
                 }
             }
 
-            //remove elements from "list"
+            // remove elements from "list"
             while(openCardsList.length) {
                 openCardsList.pop();
             }
             
-            //hiding pair of cards
+            // hiding pair of cards
             setTimeout(function() {                    
                 a.classList.remove('open', 'show');
                 b.classList.remove('open', 'show');
@@ -164,7 +165,7 @@ function matchCheck(event) {
             moveCounter++;
             setCounter();
             
-            //check if player wins
+            // check if player wins
             function checkWinCondition() {                
                 if (cardsPaired === 8) {
                     console.log('win condition triggered');
@@ -185,12 +186,12 @@ function matchCheck(event) {
 
 
 
-//counter of moves
+// counter of moves
 function setCounter() {
     movesPlaceholder.textContent = moveCounter;
 }
 
-//star rate
+// star rate
 function setStarRating() {
     let rate;
     
@@ -204,7 +205,7 @@ function setStarRating() {
     return starsPlaceholder.innerHTML = rate;
 }
 
-//creation of modal widow
+// creation of modal widow
 function showModal() {
     const tryResults = {};
     const fragment = document.createDocumentFragment();
@@ -221,25 +222,25 @@ function showModal() {
     const newTry = document.createElement('div');
     newTry.classList.add('endgame__try');
 
-    //number of tries
+    // number of tries
     const newTryNumber = document.createElement('span');
     newTryNumber.classList.add('endgame__number');
     newTryNumber.innerHTML = `#${tryResults.number}`;
     newTry.append(newTryNumber);
 
-    //stars
+    // stars
     const newTryRate = document.createElement('ul');
     newTryRate.classList.add('endgame__stars');
     newTryRate.innerHTML = tryResults.rate;
     newTry.append(newTryRate);
 
-    //number of moves
+    // number of moves
     const newTryMoves = document.createElement('span');
     newTryMoves.classList.add('endgame__moves');
     newTryMoves.innerHTML = tryResults.moves + " Moves";
     newTry.append(newTryMoves);
 
-    //time results
+    // time results
     const newTryTimer = document.createElement('span');
     newTryTimer.classList.add('endgame__timer');
     newTryTimer.innerHTML = tryResults.time;
