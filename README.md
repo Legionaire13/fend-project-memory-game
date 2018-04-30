@@ -7,7 +7,7 @@ This game is training project allowing to train your memory skills (while coding
 * [Contributing](#contributing)
 
 ## Instructions
-1. To start this game you can follow the link below:
+1. To start the game you can follow this link:
 https://legionaire13.github.io/fend-project-memory-game/
 
 2. How to play the game
