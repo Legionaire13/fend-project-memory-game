@@ -22,7 +22,6 @@ body {
 }
 
 .container {
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -150,10 +149,9 @@ h1, h2 {
 }
 
 .endgame__modal {
-    min-width: 60vw;
-    min-height: 30%;
     position: fixed;
     left: 20%;
+    right: 20%;
     top: 25%;
     background-color: white;
     z-index: 100;
@@ -210,4 +208,56 @@ h1, h2 {
        -o-filter: blur(5px);
       -ms-filter: blur(5px);
           filter: blur(5px);
+}
+
+
+/* 
+
+        media queries
+
+*/
+
+
+@media screen and (max-width: 767px) {
+    /*
+    * Styles for the deck of cards
+    */
+
+    .deck {
+        width: 90vw;
+        min-height: 90vw;
+        padding: 5vw;
+        border-radius: 2vw;
+    }
+
+    .deck .card {
+        height: 17vw;
+        width: 17vw;
+        border-radius: 1vw;
+    }
+
+    .score-panel {
+        width: 65vw;
+        margin-bottom: 1vw;
+    }
+    
+    .score-panel .timer {
+        margin: 0 1vw;
+    }
+    .deck .card.show,     
+    .deck .card.match {
+        font-size: 5vw;
+    }
+    
+    .endgame__modal {
+        /* min-width: 70vw; */
+        left: 15%;
+        right: 15%;
+    }
+}
+
+@media screen and (max-width: 374px) {    
+    .endgame__modal {
+        font-size: 0.9em;
+    }
 }
