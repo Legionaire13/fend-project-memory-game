@@ -11,7 +11,7 @@ This game is training project allowing to train your memory skills (while coding
 https://legionaire13.github.io/fend-project-memory-game/
 
 ### 2. How to play the game.
-Once the game is started the player is supposed to find all the matching pairs of cards at the deck by checking them with simple mouse click :).
+Once the game is started the player is supposed to find all the matching pairs of cards on the table by checking them with simple mouse click :).
 Once all pairs are found the player wins.
 
 ### 3. Required dependencies.
