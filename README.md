@@ -15,7 +15,7 @@ Once the game is started the player is supposed to find all the matching pairs o
 Once all pairs are found the player wins.
 
 ### 3. Required dependencies.
-To play the game you should have device of any screen size with a modern browser installed!
+To play the game you should have device with a modern browser installed!
 
 ## Contributing
 
