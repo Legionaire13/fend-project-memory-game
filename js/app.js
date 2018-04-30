@@ -1,5 +1,4 @@
-let moveCounter = 0, cardsPaired = 0, gameTimer, numberOfTries = [];
-const openCardsList = [];
+let moveCounter = 0, cardsPaired = 0, gameTimer, numberOfTries = [], openCardsList = [];
 const movesPlaceholder = document.querySelector('.moves');
 const starsPlaceholder = document.querySelector('.stars');
 const timerPlaceholder = document.querySelector('.timer');
@@ -9,8 +8,7 @@ const modalWindow = document.querySelector('.endgame__blackbox');
 const startingDeck = document.querySelector('.deck');
 const blured = document.querySelector('.container');
 
-// star game event listener
-startingDeck.addEventListener('click', readyToPlay);
+readyToPlay();
 
 // restart game event listener
 restartButton.addEventListener('click', readyToPlay);
@@ -49,9 +47,12 @@ function readyToPlay() {
 
     modalWindow.classList.remove('display_modal');
     blured.classList.remove('blured');
+
+    //some values are set to default
     moveCounter = 0;
     cardsPaired = 0;
-    const openCardsList = [];
+    openCardsList = [];
+    
     setCounter();
     setStarRating();
     startingDeck.addEventListener('click', gameTimerStart);
@@ -63,7 +64,7 @@ function readyToPlay() {
             startingDeck.removeChild(startingDeck.firstChild);
         }
 
-    };
+    }
     clearDeck();
 
     // Shuffle function from http://stackoverflow.com/a/2450976
@@ -106,7 +107,7 @@ function readyToPlay() {
         const array = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bicycle', 'fa-diamond', 'fa-bomb', 'fa-leaf', 'fa-bomb', 'fa-bolt', 'fa-bicycle', 'fa-paper-plane-o', 'fa-cube'];
         
         shuffle(array);
-        for (i = 0; i < startingDeck.childElementCount; i++) {
+        for (let i = 0; i < startingDeck.childElementCount; i++) {
             elementCollection[i].classList.add(array[i]);
         }
     }
