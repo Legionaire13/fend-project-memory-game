@@ -1,4 +1,9 @@
-let moveCounter = 0, cardsPaired = 0, gameTimer, numberOfTries = [], openCardsList = [];
+'use strict'
+let moveCounter = 0,
+    cardsPaired = 0,
+    gameTimer, gameTimerActive = false,
+    numberOfTries = [],
+    openCardsList = [];
 const movesPlaceholder = document.querySelector(".moves");
 const starsPlaceholder = document.querySelector(".stars");
 const timerPlaceholder = document.querySelector(".timer");
@@ -16,11 +21,12 @@ restartButton.addEventListener("click", readyToPlay);
 
 // starts game timer countdown
 function gameTimerStart() {
-    let min = 0, sec = 1;
+    let min = 0,
+        sec = 1;
 
-    return gameTimer = setInterval(function() {
-        
-        (sec < 10) ? timerPlaceholder.innerHTML = `${min}:0${sec}` : timerPlaceholder.innerHTML = `${min}:${sec}`;
+    return gameTimer = setInterval(function () {
+
+        (sec < 10) ? timerPlaceholder.innerHTML = `${min}:0${sec}`: timerPlaceholder.innerHTML = `${min}:${sec}`;
         if (sec == 59) {
             min++;
             sec = 0;
@@ -30,20 +36,20 @@ function gameTimerStart() {
     }, 1000);
 
 }
-      
+
 // stop timer countdown
-function gameTimerStop() {
-    return clearInterval(gameTimer);
+function gameTimerStop(val) {
+    return clearInterval(val);
 }
 
 // setting up for game sessian
 function readyToPlay() {
-    
+
     // game initial condition
-    gameTimerStop(); // to trigger when reset
+    gameTimerStop(gameTimer); // to trigger when reset
     startingDeck.removeEventListener("click", readyToPlay);
 
-    timerPlaceholder.innerHTML = "0:00"; // (ИСПРАВИТЬ) ПОСЛЕ СБРОСА ТАЙМЕР СТОИТ В НАЧАЛЕ НОВОЙ ИГРЫ
+    timerPlaceholder.innerHTML = "0:00";
 
     modalWindow.classList.remove("display_modal");
     blured.classList.remove("blured");
@@ -52,7 +58,7 @@ function readyToPlay() {
     moveCounter = 0;
     cardsPaired = 0;
     openCardsList = [];
-    
+
     setCounter();
     setStarRating();
     startingDeck.addEventListener("click", gameTimerStart);
@@ -69,7 +75,8 @@ function readyToPlay() {
 
     // Shuffle function from http://stackoverflow.com/a/2450976
     function shuffle(array) {
-        var currentIndex = array.length, temporaryValue, randomIndex;
+        var currentIndex = array.length,
+            temporaryValue, randomIndex;
 
         while (currentIndex !== 0) {
             randomIndex = Math.floor(Math.random() * currentIndex);
@@ -92,7 +99,7 @@ function readyToPlay() {
 
             newCard.classList.add("card");
             newCardItem.classList.add("fa");
-            
+
             newCard.append(newCardItem);
             fragment.appendChild(newCard);
         }
@@ -100,89 +107,100 @@ function readyToPlay() {
         return startingDeck.append(fragment);
     }
     generateCards();
-    
+
     // setting shuffled cards to the deck
     function setShuffledClasses() {
         const elementCollection = startingDeck.getElementsByClassName("fa");
         const array = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bicycle", "fa-diamond", "fa-bomb", "fa-leaf", "fa-bomb", "fa-bolt", "fa-bicycle", "fa-paper-plane-o", "fa-cube"];
-        
+
         shuffle(array);
         for (let i = 0; i < startingDeck.childElementCount; i++) {
             elementCollection[i].classList.add(array[i]);
         }
     }
     setShuffledClasses();
-    
+
     startingDeck.addEventListener("click", matchCheck);
 }
 
 // check if cards match
 function matchCheck(event) {
     const card = event.target;
-    
-    //timer starts and listener removed on first click
-    startingDeck.removeEventListener("click", gameTimerStart);
 
-    function openCard() {
-        return card.classList.add("open", "show");
-    }
-    if (card.nodeName === "LI" && card.classList[1] !== "open") {
-        openCard();//visually opens cards
+    if (card.nodeName === "LI") {
 
-        // adds card to the array if correct card opened
-        function addCardToList() {
-            if (card.nodeName === "LI" && openCardsList.length < 2) {          
+        //timer starts and listener removed on first click
+        startingDeck.removeEventListener("click", gameTimerStart); //               исправить 
+
+        if (card.classList[1] !== "open") {
+            //visually opens cards
+            function openCard() {
+                return card.classList.add("open", "show");
+            }
+
+            // adds card to the array if correct card opened
+            function addCardToList() {
                 return openCardsList.push(card);
             }
+
+            if (openCardsList.length < 2) {
+                openCard();
+                addCardToList();
+            }
         }
-        addCardToList();
-    }
 
-    function isMatched() {
-        if (card.nodeName === "LI" && openCardsList.length === 2){
-            const a = openCardsList[0];
-            const b = openCardsList[1];
+        function isMatched() {
+            if (openCardsList.length === 2) {
+                const a = openCardsList[0];
+                const b = openCardsList[1];
 
-            // if cards are not the same
-            if (a != b) {
+                // blocking user click during the checking process
+                startingDeck.removeEventListener("click", matchCheck);
+
+                // if cards are not the same
+                // if (a !== b) {
                 if (a.firstChild.classList[1] === b.firstChild.classList[1]) {
-                    a.classList.add("match");//match visualization
-                    b.classList.add("match");//match visualization
+                    a.classList.add("match"); //match visualization
+                    b.classList.add("match"); //match visualization
                     cardsPaired++;
                 }
-            }
+                // }
 
-            // remove elements from "list"
-            while(openCardsList.length) {
-                openCardsList.pop();
-            }
-            
-            // hiding pair of cards
-            setTimeout(function() {                    
-                a.classList.remove("open", "show");
-                b.classList.remove("open", "show");
-            }, 500);
+                // hiding pair of cards
+                setTimeout(function () {
+                    a.classList.remove("open", "show");
+                    b.classList.remove("open", "show");
 
-            moveCounter++;
-            setCounter();
-            
-            // check if player wins
-            function checkWinCondition() {                
-                if (cardsPaired === 8) {
-                    console.log("win condition triggered");
-                    gameTimerStop(gameTimer);
+                    // remove elements from "list"
+                    openCardsList = [];
 
-                    //win report
-                    showModal();
+                    // unblock user click
+                    startingDeck.addEventListener("click", matchCheck);
+                }, 500);
+
+
+
+                moveCounter++;
+                setCounter();
+
+                // check if player wins
+                function checkWinCondition() {
+                    if (cardsPaired === 8) {
+                        // console.log("win condition triggered");
+                        gameTimerStop(gameTimer);
+
+                        //win report
+                        showModal();
+                    }
                 }
+                checkWinCondition();
             }
-            checkWinCondition();
         }
-    }
-    
-    isMatched();
 
-    setStarRating();
+        isMatched();
+
+        setStarRating();
+    }
 }
 
 
@@ -195,7 +213,7 @@ function setCounter() {
 // star rate
 function setStarRating() {
     let rate;
-    
+
     if (moveCounter < 14) {
         rate = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`;
     } else if ((moveCounter >= 14) && (moveCounter < 20)) {
@@ -217,7 +235,7 @@ function showModal() {
     numberOfTries.push(tryResults);
     tryResults.number = numberOfTries.length;
     tryResults.rate = starsPlaceholder.innerHTML;
-    tryResults.moves =  moveCounter;
+    tryResults.moves = moveCounter;
     tryResults.time = timerPlaceholder.innerHTML;
 
     const newTry = document.createElement("div");
@@ -238,7 +256,7 @@ function showModal() {
     // number of moves
     const newTryMoves = document.createElement("span");
     newTryMoves.classList.add("endgame__moves");
-    newTryMoves.innerHTML = tryResults.moves + " Moves";
+    newTryMoves.innerHTML = `${tryResults.moves} Moves`;
     newTry.append(newTryMoves);
 
     // time results
@@ -250,6 +268,6 @@ function showModal() {
     fragment.append(newTry);
 
     modalWindow.addEventListener("click", readyToPlay);
-    
+
     return endgameScorePanel.append(fragment);
 }
