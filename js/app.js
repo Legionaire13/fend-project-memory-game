@@ -81,7 +81,7 @@ function readyToPlay() {
 
     // Shuffle function from http://stackoverflow.com/a/2450976
     function shuffle(array) {
-        var currentIndex = array.length,
+        let currentIndex = array.length,
             temporaryValue, randomIndex;
 
         while (currentIndex !== 0) {
@@ -190,10 +190,7 @@ function matchCheck(event) {
                 function checkWinCondition() {
                     if (cardsPaired === 8) {
 
-                        // console.log("win condition triggered");
-                        console.log(gameTimerActive);
                         gameTimerStop(gameTimer);
-                        console.log(gameTimerActive);
 
                         //win report
                         showModal();
