@@ -1,13 +1,13 @@
 html {
     -webkit-box-sizing: border-box;
-            box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 *,
 *::before,
 *::after {
     -webkit-box-sizing: inherit;
-            box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 html,
@@ -19,7 +19,8 @@ body {
 }
 
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    background: #ffffff url('../img/geometry2.png');
+    /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
 }
 
@@ -28,24 +29,25 @@ body {
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
     -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
 }
 
-h1, h2 {
+h1,
+h2 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
 }
 
 /*
- * Styles for the deck of cards
+ *                              Styles for the deck of cards
  */
 
 .deck {
@@ -57,18 +59,18 @@ h1, h2 {
     padding: 32px;
     border-radius: 10px;
     -webkit-box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
-            box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
+    flex-wrap: wrap;
     -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
     -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
     margin: 0 0 3em;
 }
 
@@ -84,18 +86,18 @@ h1, h2 {
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
     -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
     -webkit-box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-            box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
 .deck .card.open {
     -webkit-transform: rotateY(0);
-            transform: rotateY(0);
+    transform: rotateY(0);
     background: #02b3e4;
     cursor: default;
 }
@@ -111,7 +113,7 @@ h1, h2 {
 }
 
 /*
- * Styles for the Score Panel
+ *                          Styles for the Score Panel
  */
 
 .score-panel {
@@ -146,21 +148,16 @@ h1, h2 {
     margin: 0 10px;
 }
 
-
-
-
-
-
-
 /* 
 
 
 
-            endgame modal window
+                            endgame modal window
 
 
 
 */
+
 .endgame__blackbox {
     display: none;
     position: absolute;
@@ -175,7 +172,8 @@ h1, h2 {
 }
 
 /* class to toggle */
-.display_modal {    
+
+.display_modal {
     display: block;
 }
 
@@ -200,17 +198,17 @@ h1, h2 {
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-        -ms-flex-flow: row nowrap;
-            flex-flow: row nowrap;
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
     margin: 1em auto;
     background: #f5f5dc;
     padding: 5px;
     -webkit-transition: all 0.3s;
     -o-transition: all 0.3s;
-    transition: all 0.3s;    
+    transition: all 0.3s;
 }
 
 .endgame__stars {
@@ -238,29 +236,17 @@ h1, h2 {
 
 .blured {
     -webkit-filter: blur(5px);
-     -moz-filter: blur(5px);
-       -o-filter: blur(5px);
-      -ms-filter: blur(5px);
-          filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /* 
 
-        media queries
+                                media queries
 
 */
-
 
 @media screen and (max-width: 767px) {
     .deck {
@@ -269,34 +255,45 @@ h1, h2 {
         padding: 5vw;
         border-radius: 2vw;
     }
-
     .deck .card {
         height: 17vw;
         width: 17vw;
         border-radius: 1vw;
     }
-
     .score-panel {
         width: 65vw;
         margin-bottom: 1vw;
     }
-    
     .score-panel .timer {
         margin: 0 1vw;
     }
-    .deck .card.show,     
+    .deck .card.show,
     .deck .card.match {
         font-size: 5vw;
     }
-    
     .endgame__modal {
         left: 15%;
         right: 15%;
     }
 }
 
-@media screen and (max-width: 374px) {    
+@media screen and (max-width: 374px) {
     .endgame__modal {
         font-size: 0.9em;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .endgame__modal {
+        left: 30%;
+        right: 30%;
+    }
+}
+
+@media screen and (min-width: 2048px) {
+    .endgame__modal {
+        top: 15%;
+        left: 35%;
+        right: 35%;
     }
 }
