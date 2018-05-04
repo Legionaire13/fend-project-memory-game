@@ -15,14 +15,20 @@ const blured = document.querySelector(".container");
 
 readyToPlay();
 
-// restart game event listener
-restartButton.addEventListener("click", readyToPlay);
+restartButton.addEventListener("click", gameRestart);
 
+// restart game event listener
+function gameRestart() {
+    gameTimerStop(gameTimer);
+    readyToPlay();
+}
 
 // starts game timer countdown
 function gameTimerStart() {
     let min = 0,
         sec = 1;
+
+    gameTimerActive = true;
 
     return gameTimer = setInterval(function () {
 
@@ -33,12 +39,14 @@ function gameTimerStart() {
         } else {
             sec++;
         }
+
     }, 1000);
 
 }
 
 // stop timer countdown
 function gameTimerStop(val) {
+    gameTimerActive = false;
     return clearInterval(val);
 }
 
@@ -46,7 +54,6 @@ function gameTimerStop(val) {
 function readyToPlay() {
 
     // game initial condition
-    gameTimerStop(gameTimer); // to trigger when reset
     startingDeck.removeEventListener("click", readyToPlay);
 
     timerPlaceholder.innerHTML = "0:00";
@@ -61,9 +68,8 @@ function readyToPlay() {
 
     setCounter();
     setStarRating();
-    startingDeck.addEventListener("click", gameTimerStart);
 
-    // lear deck
+    // clear deck
     function clearDeck() {
 
         while (startingDeck.firstChild) {
@@ -127,10 +133,11 @@ function readyToPlay() {
 function matchCheck(event) {
     const card = event.target;
 
+    //timer starts when first click is made
     if (card.nodeName === "LI") {
-
-        //timer starts and listener removed on first click
-        startingDeck.removeEventListener("click", gameTimerStart); //               исправить 
+        if (!gameTimerActive) {
+            gameTimerStart();
+        }
 
         if (card.classList[1] !== "open") {
             //visually opens cards
@@ -157,14 +164,12 @@ function matchCheck(event) {
                 // blocking user click during the checking process
                 startingDeck.removeEventListener("click", matchCheck);
 
-                // if cards are not the same
-                // if (a !== b) {
+                // success visualization
                 if (a.firstChild.classList[1] === b.firstChild.classList[1]) {
-                    a.classList.add("match"); //match visualization
-                    b.classList.add("match"); //match visualization
+                    a.classList.add("match");
+                    b.classList.add("match");
                     cardsPaired++;
                 }
-                // }
 
                 // hiding pair of cards
                 setTimeout(function () {
@@ -178,16 +183,17 @@ function matchCheck(event) {
                     startingDeck.addEventListener("click", matchCheck);
                 }, 500);
 
-
-
                 moveCounter++;
                 setCounter();
 
                 // check if player wins
                 function checkWinCondition() {
                     if (cardsPaired === 8) {
+
                         // console.log("win condition triggered");
+                        console.log(gameTimerActive);
                         gameTimerStop(gameTimer);
+                        console.log(gameTimerActive);
 
                         //win report
                         showModal();
@@ -226,6 +232,7 @@ function setStarRating() {
 
 // creation of modal widow
 function showModal() {
+
     const tryResults = {};
     const fragment = document.createDocumentFragment();
 

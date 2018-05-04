@@ -237,11 +237,6 @@ h1, h2 {
 }
 
 .blured {
-    -webkit-transition: -webkit-filter 0.5s;
-    transition: -webkit-filter 0.5s;
-    -o-transition: filter 0.5s;
-    transition: filter 0.5s;
-    transition: filter 0.5s, -webkit-filter 0.5s;
     -webkit-filter: blur(5px);
      -moz-filter: blur(5px);
        -o-filter: blur(5px);
